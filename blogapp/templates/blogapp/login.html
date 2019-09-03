@@ -1,0 +1,46 @@
+{% extends 'blogapp/base.html' %}
+
+
+{% block content %}
+
+<style>
+form input[type=text]{
+    height: 37px;
+    border: 1px solid #d1d1d1;
+    width: 220px;
+    border-radius: 4px;
+}
+form input[type=text]:focus{
+    /* border: 3px solid #b3d0ff; */
+    background-color:ivory; 
+}
+form{
+    margin-top: 30px;
+}
+hr{
+    background-color: rgb(0, 0, 0);
+    color: black;
+}
+</style>
+
+    <div style="width: 400px;">
+       
+        <legend>Login</legend>
+        <hr>
+
+        {% if form.errors %}
+            <p>Your username and password didn't match.</p>
+        {% endif %}
+
+        <form method="POST" class="form-group">
+                {% csrf_token %}
+                {{ form.as_p }}
+
+                <small><a class='text-muted mr-2' href="{% url 'password_reset' %}">Forgot Password?</a></small>
+                <input style="background-color: seagreen; color: whitesmoke;" type="submit" value="Login" class="btn" >
+                <input type="hidden", name="next" value="{{next}}">
+        </form>
+
+    </div>
+
+{% endblock %}

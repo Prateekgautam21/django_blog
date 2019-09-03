@@ -1,0 +1,89 @@
+{% extends 'blogapp/base.html' %}
+{% block content %}
+
+<style>
+        img{
+            /* float: left; */
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            margin-left: 75px; 
+        }
+        .details{
+          margin-left: 20px;
+        }
+        hr{
+          width: 600px;
+          margin-left: 60px;
+          background: black;
+        }
+        .userpostlist{
+            margin-left: 50px;
+        }
+    </style>
+
+             <div style="margin-top: 20px;" class="row">
+                    <img  src="{{ user.profile.image.url }}">
+                  <div class="details">
+                    <h2>{{ user.username }}</h2>
+                    <p>{{ user.email }} <br>{{user.first_name}} {{user.last_name}}</p>
+                  </div>
+                  </div>
+                  <p style="margin-top: 10px; margin-left: 60px;">{{ user.profile.description }}</p>
+                  <hr>
+    
+    <div class="userpostlist">
+
+        <!-- <h2>Posts By - 
+         {{ user.username }}
+        </h2>
+
+        <p>Total no of posts- {{ page_obj.paginator.count }}</p> -->
+
+        <div>
+            <h3 style="margin-left: 10px;">{{ page_obj.paginator.count }} Posts</h3>
+        </div>
+
+            {% for post in post_list %}  
+                <!-- by convention its gonna loop over 'post_list' object if context_object_name= 'your_wish_name' variable isn't set -->
+
+                <div id="individual-post"> 
+                    <h1><a href="{% url 'blogapp:post_detail' pk=post.pk %}">{{ post.title }}</a></h1>
+                        <p>{{ post.text|safe|linebreaksbr }}</p>
+                        <div class="date text-muted">
+                            <p>Published on: {{ post.published_date|date:"G:i A n M, Y" }}</p>
+                        </div>
+                        <a class="text-muted" href="{% url 'blogapp:post_detail' pk=post.pk %}">{{ post.approve_comments.count }} Comments</a>
+                </div>
+            {% endfor %}
+    </div>
+
+    <div class="userpostlist">
+            {% if is_paginated %}
+    
+            {% if page_obj.has_previous %}
+                <a class="btn btn-outline-info mb-4" href="?page=1">First</a>
+                <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+            {% endif %}
+    
+            {% for num in page_obj.paginator.page_range %}
+    
+                {% if page_obj.number == num %}
+                <a class="btn btn-info mb-4" href="?page={{ num }}">{{num}}</a>
+    
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                <a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{num}}</a>
+                {% endif %}
+    
+            {% endfor %}
+    
+            {% if page_obj.has_next %}
+                <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+                <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+            {% endif %}
+    
+        {% endif %}
+    </div>
+
+{% endblock %}
+

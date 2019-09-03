@@ -1,0 +1,38 @@
+{% extends 'blogapp/base.html' %}
+
+{% block content %}
+
+<style>
+    img{
+        /* float: left; */
+        border-radius: 50%;
+        width: 80px;
+        height: 80px;
+        margin-left: 150px; 
+    }
+    .details{
+      margin-left: 25px;
+    }
+    form{
+      margin-left: 138px;
+      margin-top: 20px;
+    }
+    hr{
+      width: 600px;
+      margin-left: 138px;
+      background: black;
+    }
+</style>
+  
+          <div class="row">
+            <img  src="{{ user.profile.image.url }}">
+          <div class="details">
+            <h2>{{ user.username }}</h2>
+            <p>{{ user.email }} <br>{{user.first_name}} {{user.last_name}}</p>
+          </div>
+          </div>
+          <p style="margin-top: 10px; margin-left: 138px;">{{ user.profile.description }}</p>
+          <hr>
+
+
+{% endblock %}

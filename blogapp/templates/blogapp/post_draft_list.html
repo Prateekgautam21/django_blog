@@ -1,0 +1,13 @@
+{% extends 'blogapp/base.html' %}
+
+{% block content %}
+
+             {% for post in posts %}
+            <div class="post">
+                    <p class="date">Created On: {{ post.create_date|date:'D-M-Y' }}</p>
+                <h1><a href="{% url 'blogapp:post_detail' pk=post.pk %}">{{ post.title }}</a></h1>
+                    <p>{{post.text|trunkcatechars:200}}</p>
+                </div>
+            {% endfor %}
+
+{% endblock %}

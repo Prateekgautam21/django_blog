@@ -1,0 +1,80 @@
+{% extends 'blogapp/base.html' %}
+
+
+{% block content %}
+
+<div class="mb-4">
+    <div class="row"><img class="rounded-circle column ml-3"
+        src="{{ object.author.profile.image.url }}" alt="not found">
+        <p class="column ml-1">{{ post.author }}</p>
+    </div>
+
+   <div class="row">
+
+        <h2 style="width: 500px; margin-left: 12px;">{{ object.title }}</h1>
+
+            {% if user.is_authenticated %}
+
+            {% if object.author == user %}
+                <div style="margin-left: 100px; margin-top: 4px;">
+                        <a class="btn btn-light" href="{% url 'blogapp:post_edit' pk=post.pk %}">
+                                Edit</a>
+                        <a class="btn btn-danger" href="{% url 'blogapp:post_remove' pk=post.pk %}">
+                                Remove</a>
+                </div>
+            {% endif %}
+
+                {% endif %}
+
+
+   </div>
+
+        <p>{{ post.text|safe|linebreaksbr }}</p>
+
+        {% if post.published_date %}
+            <div class="text-muted">
+                    {{ post.published_date|date:"n M, Y G:i A" }}
+            </div>
+        {% else %}
+            <a style="margin-left: 600px;" class="btn btn-info"
+            href="{% url 'blogapp:post_publish' pk=post.pk %}">Publish</a>
+
+
+        {% endif %}
+
+        <hr style="background: gray;">
+
+        <div class="container">
+                {% for comment in post.comments.all %}
+
+                {% if user.is_authenticated or comment.approved_comment %}
+
+                        {% if not comment.approved_comment %}
+
+                            {% if post.author == user %}
+                                <a class="btn btn-danger"
+                                href="{% url 'blogapp:comment_remove' pk=comment.pk %}">
+                                   Remove</a>
+                                <a class="btn btn-light" 
+                                href="{% url 'blogapp:comment_approve' pk=comment.pk %}">
+                                    Approve</a>
+                            {% endif %}
+
+                        {%endif%}
+
+                    <p>{{ comment.text|safe|linebreaks }}</p>
+
+                    <p class="h6 text-muted">-{{comment.author}}</p>
+                    <small class="text-muted">{{ comment.created_date }}</small>
+                    <hr>
+                {% endif %}
+                {% empty %}
+                <p style="margin-top: 5px;">No comments.</p>
+                {% endfor %}
+        </div>
+
+        <a class="btn btn-info"
+        href="{% url 'blogapp:add_comment_to_post' pk=post.pk %}">Add comment</a>
+
+</div>
+{% endblock %}

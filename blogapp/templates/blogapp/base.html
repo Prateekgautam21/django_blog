@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Blog</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <!-- medium-editor -->
+        <script src="//cdn.jsdelivr.net/npm/medium-editor@latest/dist/js/medium-editor.min.js"></script>
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/medium-editor@latest/dist/css/medium-editor.min.css" type="text/css" media="screen" charset="utf-8">
+
+    <link rel="stylesheet" href="{% static 'blogapp/main.css' %}">
+   </head>
+<body>
+
+        <nav class="navbar navbar-expand-lg">
+
+          <a class="navbar-brand h1" style="margin-left: 120px; margin-top: 5px; font-size: 25px;" href="{% url 'blogapp:post_list' %}">Home</a>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse"
+                    data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+          <ul class="navbar-nav">
+
+              <li class="nav-item">
+                <a class="nav-link" href="https://www.linkedin.com">LinkedIn</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="https://www.github.com">GitHub</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url 'blogapp:about' %}">About</a>
+              </li>
+
+                  {% if user.is_authenticated %}
+
+                  <li class="nav-item" ><a class="nav-link" href="{% url 'blogapp:post_new' %}">New Post<span class="sr-only">(current)</span></a></li>
+                  <li class="nav-item" ><a class="nav-link" href="{% url 'blogapp:post_draft_list' %}">Drafts<span class="sr-only">(current)</span></a></li>
+                  <li style="margin-left: 300px;" class="nav-item" ><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+                  <li class="nav-item" ><a class="nav-link" href="{% url 'blogapp:profile' %}">Profile<span class="sr-only">(current)</span></a></li>
+
+                  {% else %}
+                      <li style="margin-left: 453px;" class="nav-item" ><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+                      <li class="nav-item" ><a class="nav-link" href="{% url 'register' %}">Register</a></li>
+                  {% endif %}
+                  </div>
+        </nav>
+
+      <main role="main" class="container">
+          <div class="row">
+            <div class="col-md-8">
+              {% if messages %}
+                {% for message in messages %}
+                  <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                  </div>
+                {% endfor %}
+              {% endif %}
+              {% block content %}{% endblock %}
+            </div>
+            <div class="col-md-4">
+              <div class="content-section sidebar">
+                <h3>Our Sidebar</h3>
+                <p class='text-muted'>You can put any information here you'd like.
+                  <ul class="list-group">
+                    <li class="list-group-item list-group-item-light">Latest Posts</li>
+                    <li class="list-group-item list-group-item-light">Announcements</li>
+                    <li class="list-group-item list-group-item-light">Calendars</li>
+                    <li class="list-group-item list-group-item-light">etc</li>
+                  </ul>
+                </p>
+              </div>
+            </div>
+          </div>
+        </main>
+
+</body>
+</html>

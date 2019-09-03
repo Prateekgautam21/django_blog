@@ -1,0 +1,27 @@
+{% extends 'blogapp/base.html' %}
+
+{% block content %}
+
+        <div class="container" style="width: 700px;">
+            <legend>Join today</legend>
+            <hr style="margin-top: 3px; margin-bottom: 30px;">
+        <form method="POST" class="form-group" autocomplete="off">
+
+            {% csrf_token %}
+            
+            {{ form.as_p }}    
+
+            {% if form.errors %}
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <strong>{{ error|escape }}</strong>
+                    {% endfor %}
+                {% endfor %}
+            {% endif %}
+            <hr style="margin-top: 40px;">
+            <input style="background-color:seagreen; color: whitesmoke;" type="submit" value="Register" class="btn">
+        
+        </form>
+        </div>
+
+{% endblock %}

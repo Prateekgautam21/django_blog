@@ -1,0 +1,71 @@
+{% extends 'blogapp/base.html' %}
+
+{% block content %}
+{% load static %}
+<style>
+    img{
+        /* float: left; */
+        border-radius: 50%;
+        width: 80px;
+        height: 80px;
+        margin-left: 150px;
+    }
+    .details{
+      margin-left: 25px;
+    }
+    form{
+      margin-left: 138px;
+      margin-top: 20px;
+    }
+    #hrone{
+      width: 600px;
+      margin-left: 138px;
+      background: black;
+    }
+    #myid{
+      display: none;
+    }
+    #btnnnos{
+      display: block;
+    }
+    #second_button{
+      border: 1px solid #2a91bd;
+      color: #2a91bd;
+    }
+</style>
+
+ {% if user.is_authenticated %}
+
+  <div style="margin-bottom: 20px;">
+      <div class="row">
+          <img  src="{{ user.profile.image.url }}">
+        <div class="details">
+          <h2>{{ user.username }}</h2>
+          <p>{{ user.email }} <br>{{user.first_name}} {{user.last_name}}</p>
+        </div>
+        </div>
+        <p style="margin-top: 10px; margin-left: 138px;">{{ user.profile.description }}</p>
+        <hr id="hrone">
+
+        <button id="btnnos" class="btn" style="background-color: seagreen;
+        width: 600px;
+        color: whitesmoke;
+        margin-left: 138px;">Edit profile</button>
+
+        {% if user == request.user %}
+        <form id="myid" method="POST" enctype="multipart/form-data">
+
+          {% csrf_token %}
+            {{ u_form.as_p }}
+            {{ p_form.as_p }}
+          <hr style="margin-top: 20px;">
+          <input class='btn btn-info' type="submit" value='Update'>
+          <button id="second_button" type="button" class="btn" >Cancel</button>
+        </form>
+      {% endif %}
+
+  </div>
+      <script src="{% static 'Javascript/myscript.js' %}"></script>
+
+{% endif %}
+{% endblock %}
